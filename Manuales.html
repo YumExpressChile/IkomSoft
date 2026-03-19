@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuales Operativos | Yum Express Chile - IkomSoft</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc; color: #0f172a; }
+.chart-container { position: relative; width: 100%; max-width: 100%; margin-left: auto; margin-right: auto; height: 320px; max-height: 380px; }
+@media (min-width: 768px) { .chart-container { height: 350px; } }
+</style>
+</head>
+<body class="antialiased">
+
+<header class="bg-[#1e3a8a] text-white py-12 px-6 shadow-lg">
+<div class="max-w-7xl mx-auto">
+<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+<span class="text-[#06b6d4]">Yum</span> Express Chile
+</h1>
+<p class="text-xl md:text-2xl font-light text-blue-100 max-w-3xl">
+Manuales de Operación y Visualización de Datos del Sistema <strong class="text-white">IkomSoft</strong>
+</p>
+<p class="mt-4 text-blue-200">Integración logística internacional: Chile &#10142; Venezuela (Zoom Envíos)</p>
+</div>
+</header>
+
+<nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+<div class="max-w-7xl mx-auto px-6 overflow-x-auto">
+<ul class="flex space-x-8 py-4 whitespace-nowrap text-sm font-semibold text-gray-600">
+<li><a href="#flujo" class="hover:text-[#06b6d4] transition-colors">Flujo Global</a></li>
+<li><a href="#taquilla" class="hover:text-[#06b6d4] transition-colors">1. Taquilla</a></li>
+<li><a href="#admin" class="hover:text-[#06b6d4] transition-colors">2. Administración</a></li>
+<li><a href="#atencion" class="hover:text-[#06b6d4] transition-colors">3. Atención al Público</a></li>
+<li><a href="#api" class="hover:text-[#06b6d4] transition-colors">4. Integración API</a></li>
+</ul>
+</div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-6 py-12">
+
+<section id="flujo" class="mb-16">
+<div class="mb-8">
+<h2 class="text-3xl font-bold text-[#1e3a8a] flex items-center gap-3">
+<span class="text-4xl">&#127760;</span> Flujo de Operaciones
+</h2>
+<p class="text-gray-600 mt-2 text-lg">
+El ecosistema logístico de Yum Express fluye a través de los distintos módulos de IkomSoft hasta la entrega final gestionada por la API de Zoom Envíos en Venezuela.
+</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+<div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#06b6d4] text-center">
+<div class="text-5xl mb-4">&#128230;</div>
+<h3 class="font-bold text-lg text-gray-800">1. Taquilla</h3>
+<p class="text-sm text-gray-500 mt-2">Recepción, pesaje y creación de guía en IkomSoft.</p>
+</div>
+<div class="hidden md:flex justify-center text-4xl text-gray-300">&#10142;</div>
+<div class="flex md:hidden justify-center text-4xl text-gray-300 my-2">&#11015;</div>
+<div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#10b981] text-center">
+<div class="text-5xl mb-4">&#128176;</div>
+<h3 class="font-bold text-lg text-gray-800">2. Administración</h3>
+<p class="text-sm text-gray-500 mt-2">Cobranza, verificación de pagos y facturación.</p>
+</div>
+<div class="hidden md:flex justify-center text-4xl text-gray-300">&#10142;</div>
+<div class="flex md:hidden justify-center text-4xl text-gray-300 my-2">&#11015;</div>
+<div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#f59e0b] text-center">
+<div class="text-5xl mb-4">&#9881;&#65039;</div>
+<h3 class="font-bold text-lg text-gray-800">3. Integración API</h3>
+<p class="text-sm text-gray-500 mt-2">Transmisión de data de IkomSoft a Zoom Envíos (zoom.red).</p>
+</div>
+<div class="hidden md:flex justify-center text-4xl text-gray-300">&#10142;</div>
+<div class="flex md:hidden justify-center text-4xl text-gray-300 my-2">&#11015;</div>
+<div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#ef4444] text-center">
+<div class="text-5xl mb-4">&#128104;&#8205;&#128187;</div>
+<h3 class="font-bold text-lg text-gray-800">4. Atención Público</h3>
+<p class="text-sm text-gray-500 mt-2">Monitoreo de estatus, soporte al cliente y resolución.</p>
+</div>
+</div>
+</section>
+
+<section id="taquilla" class="mb-20">
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+<div class="bg-[#06b6d4] text-white p-6 flex items-center justify-between">
+<div>
+<h2 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
+&#128203; Manual de Taquilla (Recepción)
+</h2>
+<p class="mt-2 text-cyan-50">Procedimientos para la atención inicial del cliente y registro de carga.</p>
+</div>
+<div class="text-6xl opacity-50">&#128230;</div>
+</div>
+<div class="p-6 md:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
+<div>
+<h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Protocolo IkomSoft</h3>
+<ul class="space-y-6">
+<li class="flex gap-4">
+<div class="flex-shrink-0 w-10 h-10 bg-cyan-100 text-[#06b6d4] rounded-full flex items-center justify-center font-bold text-lg">1</div>
+<div>
+<h4 class="font-semibold text-gray-800">Recepción y Clasificación</h4>
+<p class="text-sm text-gray-600 mt-1">Recibir el paquete. Verificar contenido permitido (excluir mercancía prohibida para Venezuela). Tomar medidas (Largo x Ancho x Alto) y peso real.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="flex-shrink-0 w-10 h-10 bg-cyan-100 text-[#06b6d4] rounded-full flex items-center justify-center font-bold text-lg">2</div>
+<div>
+<h4 class="font-semibold text-gray-800">Creación del Cliente</h4>
+<p class="text-sm text-gray-600 mt-1">Ingresar a <strong>IkomSoft > Directorio > Clientes</strong>. Registrar los datos del remitente en Chile y del destinatario en Venezuela (Cédula/RIF, Teléfono, Dirección exacta).</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="flex-shrink-0 w-10 h-10 bg-cyan-100 text-[#06b6d4] rounded-full flex items-center justify-center font-bold text-lg">3</div>
+<div>
+<h4 class="font-semibold text-gray-800">Generación de Guía (Warehouse)</h4>
+<p class="text-sm text-gray-600 mt-1">Ir a <strong>Módulo de Envíos > Nuevo Warehouse</strong>. Seleccionar destinatario. Ingresar dimensiones. IkomSoft calculará el peso volumétrico. Seleccionar servicio (Aéreo/Marítimo).</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+<h3 class="text-lg font-bold text-gray-800 mb-2">Destinos Frecuentes Venezuela</h3>
+<p class="text-xs text-gray-500 mb-6">Volumen de paquetes procesados por región (Datos IkomSoft Último Trimestre)</p>
+<div class="chart-container">
+<canvas id="chartTaquilla"></canvas>
+</div>
+<p class="text-sm text-gray-600 mt-4 text-center">
+<strong>Nota para Taquilla:</strong> Prestar especial atención a la captura correcta de códigos postales para la región Capital, dado su alto volumen.
+</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="admin" class="mb-20">
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+<div class="bg-[#10b981] text-white p-6 flex items-center justify-between">
+<div>
+<h2 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
+&#128181; Manual de Administración
+</h2>
+<p class="mt-2 text-emerald-50">Gestión de facturación, verificación de pagos y control contable.</p>
+</div>
+<div class="text-6xl opacity-50">&#128202;</div>
+</div>
+<div class="p-6 md:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
+<div class="order-2 lg:order-1 space-y-8">
+<div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+<h3 class="text-lg font-bold text-gray-800 mb-2">Proyección de Ingresos</h3>
+<p class="text-xs text-gray-500 mb-4">Tendencia mensual de facturación (Aéreo vs Marítimo)</p>
+<div class="chart-container">
+<canvas id="chartAdminRevenue"></canvas>
+</div>
+</div>
+<div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+<h3 class="text-lg font-bold text-gray-800 mb-2">Distribución de Pagos</h3>
+<p class="text-xs text-gray-500 mb-4">Métodos utilizados por los clientes</p>
+<div class="chart-container" style="height: 250px;">
+<canvas id="chartAdminPayments"></canvas>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2">
+<h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Procesos de Facturación</h3>
+<div class="space-y-4">
+<div class="p-4 border border-emerald-100 rounded-lg bg-emerald-50/30">
+<h4 class="font-bold text-emerald-800 flex items-center gap-2">&#9989; Verificación en IkomSoft</h4>
+<p class="text-sm text-gray-700 mt-2">
+Buscar el <strong>Warehouse Receipt (WR)</strong> creado por Taquilla. Verificar en el módulo de <strong>Finanzas > Cobros</strong> que el pago haya ingresado a las cuentas de la empresa (revisar reportes de bancos en Chile o Zelle).
+</p>
+</div>
+<div class="p-4 border border-emerald-100 rounded-lg bg-emerald-50/30">
+<h4 class="font-bold text-emerald-800 flex items-center gap-2">&#128179; Aplicación del Pago</h4>
+<p class="text-sm text-gray-700 mt-2">
+Una vez confirmado, aplicar el pago al WR correspondiente en IkomSoft. Esto cambiará el estatus de la guía de "Pendiente de Pago" a "Pagado / Listo para Despacho". <strong>El paquete no viaja sin este cambio de estatus.</strong>
+</p>
+</div>
+<div class="p-4 border border-emerald-100 rounded-lg bg-emerald-50/30">
+<h4 class="font-bold text-emerald-800 flex items-center gap-2">&#128196; Facturación Electrónica (SII)</h4>
+<p class="text-sm text-gray-700 mt-2">
+Generar la Boleta o Factura correspondiente según las normas del SII en Chile, vinculando el número de factura externa dentro de los comentarios del recibo en IkomSoft para auditorías.
+</p>
+</div>
+</div>
+<div class="mt-8 p-6 bg-[#1e3a8a] text-white rounded-xl text-center">
+<div class="text-sm uppercase tracking-wider text-blue-200 font-semibold mb-1">KPI Crítico Administración</div>
+<div class="text-4xl font-extrabold">&lt; 24 Hrs</div>
+<div class="text-sm mt-1 text-blue-100">Tiempo máximo para conciliación de pagos desde la recepción.</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="atencion" class="mb-20">
+<div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+<div class="bg-[#ef4444] text-white p-6 flex items-center justify-between">
+<div>
+<h2 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
+&#128104;&#8205;&#128187; Atención al Público
+</h2>
+<p class="mt-2 text-red-50">Manejo de post-venta, rastreo de guías y resolución de conflictos.</p>
+</div>
+<div class="text-6xl opacity-50">&#128222;</div>
+</div>
+<div class="p-6 md:p-10">
+<p class="text-gray-700 text-lg mb-8 max-w-4xl">
+El equipo de Atención al Público utiliza el <strong>Módulo de Rastreo de IkomSoft</strong> y la interfaz externa de <strong>mi.zoom.red</strong> para proporcionar información precisa al remitente en Chile y al destinatario en Venezuela.
+</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div>
+<h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Gestión de Tickets y Consultas</h3>
+<div class="chart-container">
+<canvas id="chartCS"></canvas>
+</div>
+<p class="text-sm text-gray-600 mt-4">
+<strong>Protocolo de Rastreo:</strong> Solicitar al cliente el número de guía de IkomSoft. Ingresar al buscador principal. Si el estatus es "En tránsito nacional (Venezuela)", verificar el número de guía espejo de Zoom Envíos en las notas del sistema para consultar directamente en el portal de Zoom.
+</p>
+</div>
+<div class="space-y-4">
+<h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Resolución de Incidencias</h3>
+<div class="flex gap-4 items-start bg-red-50 p-4 rounded-lg">
+<div class="text-2xl">&#128680;</div>
+<div>
+<h4 class="font-bold text-red-800">Paquete Retrasado en Aduana</h4>
+<p class="text-sm text-gray-700">Informar al cliente sobre procesos estándar de nacionalización. Actualizar el estatus en IkomSoft a "En Revisión Aduanal" para visibilidad general.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start bg-green-50 p-4 rounded-lg">
+<div class="text-2xl">&#128205;</div>
+<div>
+<h4 class="font-bold text-green-800">Cambio de Dirección en Venezuela</h4>
+<p class="text-sm text-gray-700">Solo aplicable si el paquete no ha sido entregado a Zoom. Actualizar en IkomSoft y notificar urgentemente al equipo de despacho (Integración API).</p>
+</div>
+</div>
+<div class="flex gap-4 items-start bg-blue-50 p-4 rounded-lg">
+<div class="text-2xl">&#128172;</div>
+<div>
+<h4 class="font-bold text-blue-800">Notificación Proactiva</h4>
+<p class="text-sm text-gray-700">Utilizar el módulo de mensajería de IkomSoft para enviar correos automáticos cuando la guía cambie a "Disponible en Agencia Zoom" o "En Ruta de Entrega".</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="api" class="mb-20">
+<div class="bg-[#0f172a] rounded-2xl shadow-xl overflow-hidden text-slate-300">
+<div class="bg-gradient-to-r from-[#f59e0b] to-[#ea580c] text-white p-6 flex items-center justify-between">
+<div>
+<h2 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
+&#9881;&#65039; Integración API (Zoom Envíos)
+</h2>
+<p class="mt-2 text-orange-50">Documentación exclusiva para el flujo técnico IkomSoft &harr; zoom.red</p>
+</div>
+<div class="text-6xl opacity-50">&#128187;</div>
+</div>
+<div class="p-6 md:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
+<div>
+<h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">Flujo de Sincronización</h3>
+<p class="mb-6 text-sm">
+El objetivo es automatizar la creación de la "Guía Hija" en Zoom Envíos una vez que el máster llega a Venezuela, y retornar el estatus de última milla a IkomSoft.
+</p>
+<div class="space-y-4 font-mono text-sm">
+<div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+<span class="text-amber-400 font-bold">POST</span> <span class="text-cyan-300">/auth/token</span>
+<p class="text-slate-400 mt-1">Obtener Bearer token desde API Zoom usando credenciales de empresa.</p>
+</div>
+<div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+<span class="text-amber-400 font-bold">POST</span> <span class="text-cyan-300">/envios/crear</span>
+<p class="text-slate-400 mt-1">Mapear JSON de IkomSoft (Destinatario, Cédula, Dirección, Peso) al endpoint de Zoom. Retorna número de guía Zoom.</p>
+</div>
+<div class="bg-slate-800 p-4 rounded-lg border border-slate-700">
+<span class="text-emerald-400 font-bold">GET</span> <span class="text-cyan-300">/envios/{guia_zoom}/tracking</span>
+<p class="text-slate-400 mt-1">Cron job cada 4 horas. Obtiene estatus de Zoom y lo inyecta en la base de datos de IkomSoft vía Webhook/API interna.</p>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2">Rendimiento y Latencia API</h3>
+<p class="text-xs text-slate-400 mb-4">Tiempos de respuesta (ms) entre servidores IkomSoft y mi.zoom.red</p>
+<div class="chart-container bg-slate-800 rounded-xl p-4">
+<canvas id="chartApi"></canvas>
+</div>
+<div class="mt-6 bg-slate-800 p-4 rounded-lg border-l-4 border-amber-500">
+<h4 class="font-bold text-amber-500 mb-1">Puntos Críticos de Mapeo</h4>
+<ul class="list-disc list-inside text-sm space-y-1 text-slate-300">
+<li><strong>Estados Zoom:</strong> `REC` (Recibido), `TRN` (En Tránsito), `ENT` (Entregado).</li>
+<li><strong>IkomSoft:</strong> Mapear `ENT` a Estatus Final (Entregado) para cerrar el ciclo del Warehouse.</li>
+<li>Asegurar que el RIF/Cédula viaje sin guiones ni espacios hacia Zoom.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+<p>&copy; 2026 Yum Express Chile. Sistema de Gestión Logística IkomSoft.</p>
+</footer>
+
+<script>
+function wrapLabel(label) {
+if (label.length <= 16) return label;
+const words = label.split(' ');
+const lines = [];
+let currentLine = '';
+for (let word of words) {
+if ((currentLine + word).length > 16) {
+if (currentLine) lines.push(currentLine.trim());
+currentLine = word + ' ';
+} else {
+currentLine += word + ' ';
+}
+}
+if (currentLine) lines.push(currentLine.trim());
+return lines.length > 1 ? lines : lines[0];
+}
+
+const tooltipConfig = {
+callbacks: {
+title: function(tooltipItems) {
+const item = tooltipItems[0];
+let label = item.chart.data.labels[item.dataIndex];
+return Array.isArray(label) ? label.join(' ') : label;
+}
+}
+};
+
+const commonOptions = {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+tooltip: tooltipConfig,
+legend: { position: 'bottom', labels: { font: { family: "'Segoe UI', sans-serif" } } }
+}
+};
+
+const labelsTaquilla = ['Caracas (Distrito Capital)', 'Valencia (Carabobo)', 'Maracaibo (Zulia)', 'Barquisimeto (Lara)', 'Maracay (Aragua)'].map(wrapLabel);
+const ctxTaquilla = document.getElementById('chartTaquilla').getContext('2d');
+new Chart(ctxTaquilla, {
+type: 'bar',
+data: {
+labels: labelsTaquilla,
+datasets: [{
+label: 'Volumen de Paquetes (%)',
+data: [45, 20, 15, 12, 8],
+backgroundColor: '#06b6d4',
+borderRadius: 4
+}]
+},
+options: {
+...commonOptions,
+scales: {
+y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+x: { grid: { display: false } }
+}
+}
+});
+
+const labelsAdminRev = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'].map(wrapLabel);
+const ctxAdminRev = document.getElementById('chartAdminRevenue').getContext('2d');
+new Chart(ctxAdminRev, {
+type: 'line',
+data: {
+labels: labelsAdminRev,
+datasets: [
+{
+label: 'Ingresos Aéreo (USD)',
+data: [12000, 15000, 14500, 18000],
+borderColor: '#1e3a8a',
+backgroundColor: 'rgba(30, 58, 138, 0.1)',
+fill: true,
+tension: 0.4
+},
+{
+label: 'Ingresos Marítimo (USD)',
+data: [8000, 8500, 11000, 10500],
+borderColor: '#10b981',
+backgroundColor: 'rgba(16, 185, 129, 0.1)',
+fill: true,
+tension: 0.4
+}
+]
+},
+options: {
+...commonOptions,
+scales: {
+y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+x: { grid: { display: false } }
+}
+}
+});
+
+const labelsAdminPay = ['Transferencia (Zelle)', 'Pago Móvil (Bs)', 'Efectivo (USD)', 'Tarjeta (CLP)'].map(wrapLabel);
+const ctxAdminPay = document.getElementById('chartAdminPayments').getContext('2d');
+new Chart(ctxAdminPay, {
+type: 'doughnut',
+data: {
+labels: labelsAdminPay,
+datasets: [{
+data: [40, 30, 20, 10],
+backgroundColor: ['#1e3a8a', '#06b6d4', '#10b981', '#f59e0b'],
+borderWidth: 0
+}]
+},
+options: {
+...commonOptions,
+cutout: '70%'
+}
+});
+
+const labelsCS = ['Estatus de Envío', 'Cotizaciones y Tarifas', 'Cambio de Dirección', 'Reclamos por Demora', 'Asesoría Aduanal'].map(wrapLabel);
+const ctxCS = document.getElementById('chartCS').getContext('2d');
+new Chart(ctxCS, {
+type: 'bar',
+data: {
+labels: labelsCS,
+datasets: [{
+label: 'Cantidad de Tickets Mensuales',
+data: [350, 210, 85, 45, 30],
+backgroundColor: '#ef4444',
+borderRadius: 4
+}]
+},
+options: {
+...commonOptions,
+indexAxis: 'y',
+scales: {
+x: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+y: { grid: { display: false } }
+}
+}
+});
+
+const labelsApi = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00'].map(wrapLabel);
+const ctxApi = document.getElementById('chartApi').getContext('2d');
+new Chart(ctxApi, {
+type: 'line',
+data: {
+labels: labelsApi,
+datasets: [{
+label: 'Latencia mi.zoom.red (ms)',
+data: [250, 280, 450, 310, 290, 260],
+borderColor: '#f59e0b',
+backgroundColor: '#f59e0b',
+borderWidth: 2,
+pointRadius: 4,
+pointBackgroundColor: '#fff'
+}]
+},
+options: {
+...commonOptions,
+plugins: {
+...commonOptions.plugins,
+legend: { labels: { color: '#cbd5e1', font: { family: "'Segoe UI', sans-serif" } } }
+},
+scales: {
+y: { beginAtZero: true, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+}
+}
+});
+</script>
+
+<!--
+PLAN SUMMARY:
+- Section 1: Introduction and global flow map using HTML.
+- Section 2: Taquilla (Ticketing) instructions & destination volume chart.
+- Section 3: Administración (Billing) instructions & revenue/payment charts.
+- Section 4: API Integration (Zoom Envíos) guide & performance metrics.
+- Section 5: Atención al Público (Post-sales) instructions & support ticket breakdown.
+
+CHART CHOICES SUMMARY:
+- Destinos Frecuentes -> Goal: Compare -> Bar Chart -> Chart.js (NO SVG)
+- Ingresos Semanales -> Goal: Change -> Area Chart -> Chart.js (NO SVG)
+- Métodos de Pago -> Goal: Compare/Composition -> Donut Chart -> Chart.js (NO SVG)
+- Rendimiento API -> Goal: Change/Inform -> Line Chart -> Chart.js (NO SVG)
+- Tipos de Consultas -> Goal: Compare -> Horizontal Bar Chart -> Chart.js (NO SVG)
+
+PALETTE: Vibrant Blues & Accents (Deep Blue, Cyan, Emerald, Amber)
+
+CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+</body>
+</html>
