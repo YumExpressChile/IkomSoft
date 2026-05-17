@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual de Logística Yum Express</title>
+  <!-- Tailwind CSS para el diseño visual avanzado -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Estilos personalizados para animaciones y scroll suave */
+    html {
+      scroll-behavior: smooth;
+    }
+    .animate-zoom-in {
+      animation: zoomIn 0.2s ease-out forwards;
+    }
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body class="margin-0 padding-0">
+
+  <!-- Nodo raíz de la aplicación -->
+  <div id="root"></div>
+
+  <!-- Motores de React y Babel cargados de forma segura vía CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+  <!-- Lógica interactiva en JSX -->
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // --- COMPONENTE SEGURO DE CARGA DE IMÁGENES ---
+    const SafeImage = ({ src, fallback, alt, className }) => {
+      const [imgSrc, setImgSrc] = useState(src);
+
+      useEffect(() => {
+        setImgSrc(src);
+      }, [src]);
+
+      return (
+        <img 
+          src={imgSrc} 
+          alt={alt} 
+          className={className} 
+          onError={() => {
+            if (imgSrc !== fallback) {
+              setImgSrc(fallback);
+            }
+          }} 
+        />
+      );
+    };
+
+    // --- COMPONENTE DE FLECHA CON BRILLO BLANCO ESCALADA ---
+    const FlowArrow = ({ className = "h-16 w-10" }) => (
+      <div className={`flex justify-center items-center pointer-events-none ${className}`}>
+        <svg className="w-full h-full overflow-visible" viewBox="0 0 24 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="white-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          <path 
+            d="M12 0 L12 36 M4 28 L12 36 L20 28" 
+            stroke="black" 
+            strokeWidth="4" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+            filter="url(#white-glow)"
+            className="drop-shadow-[0_0_6px_rgba(255,255,255,1)]"
+          />
+        </svg>
+      </div>
+    );
+
+    // --- COMPONENTE DE BOTÓN INTERACTIVO ESCALADO AL DOBLE ---
+    const InteractiveNode = ({ title, imageSrc, fallbackImage, onClickNode }) => {
+      return (
+        <div className="flex flex-col items-center">
+          {/* Título exterior por encima del botón */}
+          <span className="text-xs md:text-sm font-black text-slate-900 mb-2.5 text-center uppercase tracking-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] max-w-[280px] md:max-w-[320px] leading-tight">
+            {title}
+          </span>
+          
+          <div 
+            className="w-80 md:w-88 aspect-video rounded-2xl border-4 border-black bg-slate-950 overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.95)] transition-all duration-300 cursor-pointer hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,1)] active:scale-95"
+            onClick={onClickNode}
+          >
+            <div className="w-full h-full relative">
+              <SafeImage 
+                src={imageSrc} 
+                fallback={fallbackImage} 
+                alt={title} 
+                className="w-full h-full object-contain"
+              />
+              <div className="absolute bottom-1.5 right-1.5 bg-black/80 border border-white/20 text-[8px] md:text-[9px] text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider">
+                Ver Detalles
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // --- COMPONENTE PRINCIPAL ---
+    const App = () => {
+      const [currentScreen, setCurrentScreen] = useState('flow');
+      const [activeInfo, setActiveInfo] = useState(null);
+      const [savedScrollPosition, setSavedScrollPosition] = useState(0);
+
+      // Imágenes predeterminadas y links oficiales integrados
+      const images = {
+        caminoSantiago: "https://i.imgur.com/bl1ElP1.png",
+        almacenSantiago: "https://i.imgur.com/a8okZ93.jpeg",
+        consolidadoAereo: "https://i.imgur.com/Md9kLak.jpeg",
+        consolidadoMaritimo: "https://i.imgur.com/m9hc3Cp.jpeg",
+        puertoAereo: "https://i.imgur.com/BZ633f4.jpeg",
+        puertoMaritimo: "https://i.imgur.com/jLbhTi4.jpeg",
+        transitoAereo: "https://i.imgur.com/gomPMBL.jpeg",
+        transitoMaritimo: "https://i.imgur.com/t1Lqq4t.png",
+        aduanaMaiquetia: "https://i.imgur.com/V8kX6pj.jpeg",
+        aduanaPuertoCabello: "https://i.imgur.com/OGYGiKK.jpeg",
+        almacenVenezuela: "https://i.imgur.com/883bwCm.png",
+        caminoZoom: "https://i.imgur.com/CqOLV0x.png",
+        entregado: "https://i.imgur.com/aVGYuYL.png",
+        warehouseDefault: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=500&q=80"
+      };
+
+      // Guardar posición de scroll al abrir detalles y saltar al tope sin bloqueos
+      const handleOpenDetail = (stepData) => {
+        setSavedScrollPosition(window.scrollY);
+        setActiveInfo(stepData);
+        setCurrentScreen('detail');
+        window.scrollTo(0, 0);
+      };
+
+      // Retornar al flujo regresando de forma exacta a la posición anterior de scroll
+      const handleCloseDetail = () => {
+        setCurrentScreen('flow');
+        setActiveInfo(null);
+        setTimeout(() => {
+          window.scrollTo({ top: savedScrollPosition, behavior: 'smooth' });
+        }, 100);
+      };
+
+      return (
+        <div 
+          className="min-h-screen p-4 md:p-8 font-sans text-slate-800 relative bg-cover bg-center bg-no-repeat bg-fixed"
+          style={{ backgroundImage: `url('https://i.imgur.com/lNe5sJO.jpeg')` }}
+        >
+          {/* Capa de contraste general */}
+          <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+
+          {/* Tarjeta contenedora con transparencia translúcida al 75% blanca (bg-white/25) */}
+          <div className="max-w-4xl mx-auto bg-white/25 rounded-3xl border-4 border-black shadow-[0_0_35px_rgba(255,255,255,0.35)] p-4 md:p-10 relative z-10 backdrop-blur-md">
+            
+            {/* CABECERA CORPORATIVA */}
+            <div className="flex flex-col items-center justify-center mb-10 pb-6 border-b-2 border-dashed border-black/20">
+              <img 
+                src="https://i.imgur.com/MxwYQ9W.png" 
+                alt="Yum Express Logo" 
+                className="h-20 md:h-24 object-contain mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]" 
+              />
+              <h1 className="text-2xl md:text-4xl font-black text-center text-slate-950 tracking-tighter drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
+                MANUAL DE FLUJO LOGÍSTICO
+              </h1>
+              <p className="text-amber-800 font-extrabold uppercase tracking-widest text-[10px] md:text-xs text-center mt-1">
+                YUM EXPRESS • PROTOCOLO OPERATIVO IKOMSOFT
+              </p>
+            </div>
+
+            {/* --- PANTALLA 1: MAPA DE FLUJO PRINCIPAL --- */}
+            {currentScreen === 'flow' && (
+              <div className="flex flex-col items-center space-y-10 relative animate-in fade-in duration-300">
+
+                {/* PASO 1: ALMACENES REGIONALES VERTICALES COMPACTOS */}
+                <div className="w-full flex flex-col items-center">
+                  <span className="text-[11px] md:text-xs font-black text-slate-900 mb-3.5 tracking-wider uppercase drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]">Sedes de Origen</span>
+                  <div className="flex justify-center gap-2 md:gap-4 w-full max-w-2xl">
+                    {[
+                      { 
+                        name: 'ANTOFAGASTA', 
+                        imageSrc: "https://i.imgur.com/Yl1nsAt.jpeg",
+                        subtitle: "Recepción en Sede Antofagasta" 
+                      },
+                      { 
+                        name: 'TALCA', 
+                        imageSrc: "https://i.imgur.com/m5wcbJD.jpeg",
+                        subtitle: "Recepción en Sede Talca" 
+                      },
+                      { 
+                        name: 'CURICÓ', 
+                        imageSrc: "https://i.imgur.com/f78zNEM.jpeg",
+                        subtitle: "Recepción en Sede Curicó" 
+                      },
+                      { 
+                        name: 'VIÑA DEL MAR', 
+                        imageSrc: "https://i.imgur.com/OEHzdv2.jpeg",
+                        subtitle: "Recepción en Sede Viña del Mar" 
+                      },
+                      { 
+                        name: 'LA SERENA', 
+                        imageSrc: "https://i.imgur.com/j0g0KcB.jpeg",
+                        subtitle: "Recepción en Sede La Serena" 
+                      }
+                    ].map((sede) => (
+                      <div 
+                        key={sede.name}
+                        onClick={() => handleOpenDetail({
+                          title: `ALMACÉN ${sede.name}`,
+                          subtitle: sede.subtitle,
+                          isTracking: false,
+                          imageSrc: sede.imageSrc,
+                          actionIkomSoft: `Al recibir el paquete del cliente físico en la sucursal de ${sede.name}, el personal operativo abre el módulo de pesaje en IkomSoft, registra las dimensiones reales y peso. El sistema asigna este Estatus de Almacén a nivel de paquete de manera automática, imprimiendo la respectiva etiqueta de control.`,
+                          actionReal: `El cliente entrega físicamente sus bultos o cajas en nuestra sede de ${sede.name}. El paquete es custodiado temporalmente en nuestros estantes, clasificado y preparado de manera segura para el traslado hacia la capital.`
+                        })}
+                        className="w-16 md:w-20 h-48 rounded-2xl bg-black border-3 border-black shadow-[0_0_15px_rgba(255,255,255,0.95)] flex items-center justify-center cursor-pointer relative overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-slate-850 opacity-95" />
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <span 
+                            className="text-[10px] md:text-[12px] font-black tracking-widest text-white uppercase whitespace-nowrap"
+                            style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}
+                          >
+                            {sede.name}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Conectores lógicos */}
+                  <div className="w-full h-8 max-w-2xl relative mt-1">
+                    <svg className="w-full h-full overflow-visible" preserveAspectRatio="none">
+                      <defs>
+                        <filter id="white-glow-paths" x="-10%" y="-10%" width="120%" height="120%">
+                          <feGaussianBlur stdDeviation="2" result="blur" />
+                          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                      </defs>
+                      <path 
+                        d="M10% 0 L50% 30 M30% 0 L50% 30 M50% 0 L50% 30 M70% 0 L50% 30 M90% 0 L50% 30" 
+                        stroke="black" 
+                        strokeWidth="3.5" 
+                        filter="url(#white-glow-paths)" 
+                        fill="none" 
+                        className="drop-shadow-[0_0_5px_rgba(255,255,255,0.9)]"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* PASO 2: EN CAMINO A SANTIAGO */}
+                <InteractiveNode 
+                  title="EN CAMINO A SANTIAGO"
+                  imageSrc={images.caminoSantiago}
+                  fallbackImage={images.warehouseDefault}
+                  onClickNode={() => handleOpenDetail({
+                    title: "EN CAMINO A SANTIAGO DE CHILE",
+                    subtitle: "Tránsito Interurbano de Regiones",
+                    isTracking: false,
+                    imageSrc: images.caminoSantiago,
+                    actionIkomSoft: "El sistema agrupa masivamente todos los bultos despachados bajo este estatus de almacén para marcar el viaje. No requiere que el sistema liquide inventario, pero alerta a la central de Santiago qué paquetes están en tránsito hacia su sede.",
+                    actionReal: "La carga consolidada de cada región se estiba de manera segura dentro de los camiones de las agencias de encomienda nacional subcontratadas. El camión recorre las carreteras chilenas con destino al Hub Central en la capital."
+                  })}
+                />
+
+                <FlowArrow />
+
+                {/* PASO 3: ALMACÉN PRINCIPAL SANTIAGO */}
+                <InteractiveNode 
+                  title="ALMACÉN SANTIAGO HUB"
+                  imageSrc={images.almacenSantiago}
+                  fallbackImage={images.warehouseDefault}
+                  onClickNode={() => handleOpenDetail({
+                    title: "ALMACÉN SANTIAGO HUB",
+                    subtitle: "Central Metropolitana de Chile",
+                    isTracking: false,
+                    imageSrc: images.almacenSantiago,
+                    actionIkomSoft: "Al llegar la encomienda desde regiones, el operador del Hub de Santiago descarga el lote físico y pistolea cada código de barra. El estatus en el software cambia automáticamente de 'En Camino a Santiago' a 'En Almacén Santiago', confirmando su recepción. Igualmente, las nuevas guías creadas para clientes directos de Santiago inician bajo este estado.",
+                    actionReal: "Se abren los bultos recibidos de regiones y se clasifican en los anaqueles correspondientes junto con la mercancía local de Santiago de Chile. El Hub Central se encarga de auditar, reempacar de ser necesario, y separar la carga según su vía final (Aérea o Marítima)."
+                  })}
+                />
+
+                {/* DIVISION DOBLE RAMA (Aéreo / Marítimo) */}
+                <div className="w-[400px] md:w-[500px] h-10 relative">
+                  <svg className="w-full h-full overflow-visible" viewBox="0 0 500 40">
+                    <path 
+                      d="M250 0 L250 15 M250 15 L80 40 M250 15 L420 40" 
+                      stroke="black" 
+                      strokeWidth="4" 
+                      strokeLinecap="round"
+                      filter="url(#white-glow)"
+                      fill="none"
+                      className="drop-shadow-[0_0_6px_rgba(255,255,255,1)]"
+                    />
+                  </svg>
+                </div>
+
+                {/* SECCIÓN DOBLE RAMA */}
+                <div className="grid grid-cols-2 gap-x-8 md:gap-x-20 w-full max-w-4xl relative">
+                  
+                  {/* Líneas guía de flujo */}
+                  <div className="absolute inset-y-0 left-0 w-full pointer-events-none -z-10">
+                    <svg className="w-full h-full opacity-35" preserveAspectRatio="none">
+                      <line x1="25%" y1="0" x2="25%" y2="100%" stroke="black" strokeWidth="2.5" strokeDasharray="6,6" />
+                      <line x1="75%" y1="0" x2="75%" y2="100%" stroke="black" strokeWidth="2.5" strokeDasharray="6,6" />
+                    </svg>
+                  </div>
+
+                  {/* RAMA AÉREA (IZQUIERDA) */}
+                  <div className="flex flex-col items-center space-y-10">
+                    <span className="text-xs font-black text-sky-700 tracking-widest uppercase bg-sky-100/90 px-3 py-1 rounded border-2 border-sky-300 shadow-md">VÍA AÉREA</span>
+                    
+                    {/* Consolidado Aéreo */}
+                    <InteractiveNode 
+                      title="CONSOLIDADO PALLET AÉREO"
+                      imageSrc={images.consolidadoAereo}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "CONSOLIDADO PALLET AÉREO",
+                        subtitle: "Agrupación Interna para Vuelo",
+                        isTracking: false,
+                        imageSrc: images.consolidadoAereo,
+                        actionIkomSoft: "Estatus puramente interno (oculto para el cliente). El operador asocia de forma virtual múltiples códigos de paquetes individuales dentro de una sola 'Guía Master' o número de Pallet Aéreo. Esto facilita el control global de la carga en los siguientes pasos.",
+                        actionReal: "El personal de almacén agrupa físicamente los paquetes de vía aérea sobre pallets estandarizados. Se cubren con película plástica protectora (film extensible) y redes de sujeción para su transporte aéreo seguro."
+                      })}
+                    />
+                    <FlowArrow />
+                    
+                    {/* En el puerto aéreo */}
+                    <InteractiveNode 
+                      title="EN EL PUERTO (AÉREO)"
+                      imageSrc={images.puertoAereo}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "EN EL PUERTO (AÉREO)",
+                        subtitle: "Despacho en Terminal de Carga SCL",
+                        isTracking: true,
+                        imageSrc: images.puertoAereo,
+                        actionIkomSoft: "Actualización manual en sistema desde la oficina administrativa. Cambia el Tracking comercial global a 'En el Puerto'.",
+                        actionReal: "Los pallets son trasladados por nuestros camiones de despacho hacia las bodegas de la aerolínea de carga en el Aeropuerto Internacional Arturo Merino Benítez (Santiago de Chile), listos para el proceso de estiba en el avión."
+                      })}
+                    />
+                    <FlowArrow />
+                    
+                    {/* En tránsito aéreo */}
+                    <InteractiveNode 
+                      title="EN TRÁNSITO AÉREO"
+                      imageSrc={images.transitoAereo}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "EN TRÁNSITO AÉREO",
+                        subtitle: "Vuelo de Carga hacia Venezuela",
+                        isTracking: true,
+                        imageSrc: images.transitoAereo,
+                        actionIkomSoft: "Estatus comercial de Tracking activado manualmente desde la oficina de IkomSoft una vez que se confirma el despegue de la aeronave.",
+                        actionReal: "El vuelo de carga se encuentra en el aire cruzando las rutas internacionales rumbo a territorio venezolano. Durante este paso, no hay escaneo físico de piezas."
+                      })}
+                    />
+                    <FlowArrow />
+                    
+                    {/* Aduana Maiquetía */}
+                    <InteractiveNode 
+                      title="ADUANA DE MAIQUETÍA"
+                      imageSrc={images.aduanaMaiquetia}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "ADUANA DE MAIQUETÍA",
+                        subtitle: "Nacionalización de Carga Aérea",
+                        isTracking: true,
+                        imageSrc: images.aduanaMaiquetia,
+                        actionIkomSoft: "Modificado manualmente en la oficina administrativa. Informa al cliente que los paquetes están en proceso de auditoría arancelaria y desaduanamiento.",
+                        actionReal: "El avión aterriza en el Aeropuerto Internacional de Maiquetía. Las autoridades aduaneras venezolanas y nuestro agente aduanal procesan la documentación legal, revisan la carga y efectúan los pagos correspondientes para liberar la carga a zona de distribución nacional."
+                      })}
+                    />
+                  </div>
+
+                  {/* RAMA MARÍTIMA (DERECHA) */}
+                  <div className="flex flex-col items-center space-y-10">
+                    <span className="text-xs font-black text-amber-700 tracking-widest uppercase bg-amber-100/90 px-3 py-1 rounded border-2 border-amber-300 shadow-md">VÍA MARÍTIMA</span>
+                    
+                    {/* Consolidado Marítimo */}
+                    <InteractiveNode 
+                      title="CONSOLIDADO CONTENEDOR"
+                      imageSrc={images.consolidadoMaritimo}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "CONSOLIDADO CONTENEDOR MARÍTIMO",
+                        subtitle: "Carga de Contenedor Consolidado",
+                        isTracking: false,
+                        imageSrc: images.consolidadoMaritimo,
+                        actionIkomSoft: "Mapeo interno en el sistema de almacén. Los operadores vinculan lógicamente cada código de barra de las cajas individuales al número de contenedor maestro. Esto genera la hoja de consolidado general del viaje marítimo.",
+                        actionReal: "Se realiza la carga y estiba meticulosa de las cajas dentro del contenedor marítimo en la central de Santiago. El espacio se optimiza de manera física para evitar movimientos bruscos de la carga durante el viaje."
+                      })}
+                    />
+                    <FlowArrow />
+                    
+                    {/* En el puerto marítimo */}
+                    <InteractiveNode 
+                      title="EN EL PUERTO (MARÍTIMO)"
+                      imageSrc={images.puertoMaritimo}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "EN EL PUERTO (MARÍTIMO)",
+                        subtitle: "Recepción en Puerto de Origen",
+                        isTracking: true,
+                        imageSrc: images.puertoMaritimo,
+                        actionIkomSoft: "La administración marca en la plataforma IkomSoft que la carga matriz ha ingresado formalmente a puerto. Esto actualiza el Tracking del cliente en tiempo real.",
+                        actionReal: "El contenedor, debidamente cerrado y sellado con precinto de seguridad, es transportado en camión plano hacia el puerto de San Antonio, ingresando al patio de exportación para su posterior embarque en el buque."
+                      })}
+                    />
+                    <FlowArrow />
+                    
+                    {/* En tránsito marítimo */}
+                    <InteractiveNode 
+                      title="EN TRÁNSITO MARÍTIMO"
+                      imageSrc={images.transitoMaritimo}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "EN TRÁNSITO MARÍTIMO",
+                        subtitle: "Navegación del Buque Mercante",
+                        isTracking: true,
+                        imageSrc: images.transitoMaritimo,
+                        actionIkomSoft: "Estatus comercial de Tracking activado desde el panel administrativo de IkomSoft al momento de confirmarse el zarpe del navío.",
+                        actionReal: "El buque mercante transporta el contenedor por el océano rumbo a puertos venezolanos. Es la fase que toma mayor tiempo del ciclo logístico marítimo; los clientes pueden verificar el hito del viaje mediante este estado."
+                      })}
+                    />
+                    <FlowArrow />
+                    
+                    {/* Aduana Puerto Cabello */}
+                    <InteractiveNode 
+                      title="ADUANA PUERTO CABELLO"
+                      imageSrc={images.aduanaPuertoCabello}
+                      fallbackImage={images.warehouseDefault}
+                      onClickNode={() => handleOpenDetail({
+                        title: "ADUANA DE PUERTO CABELLO",
+                        subtitle: "Nacionalización de Carga Marítima",
+                        isTracking: true,
+                        imageSrc: images.aduanaPuertoCabello,
+                        actionIkomSoft: "Actualizado administrativamente en la oficina de IkomSoft para informar del arribo a aduana de destino en Venezuela.",
+                        actionReal: "El barco atraca en el puerto de Puerto Cabello. El contenedor es descargado y se efectúa el desaduanamiento legal, inspección física de los precintos y liquidación arancelaria por parte de nuestro agente aduanal autorizado."
+                      })}
+                    />
+                  </div>
+                </div>
+
+                {/* CONFLUENCIA DE AMBAS RUTAS */}
+                <div className="w-[400px] md:w-[500px] h-10 relative">
+                  <svg className="w-full h-full overflow-visible" viewBox="0 0 500 40">
+                    <path 
+                      d="M80 0 L250 25 M420 0 L250 25 M250 25 L250 40" 
+                      stroke="black" 
+                      strokeWidth="4" 
+                      strokeLinecap="round"
+                      filter="url(#white-glow)"
+                      fill="none"
+                      className="drop-shadow-[0_0_6px_rgba(255,255,255,1)]"
+                    />
+                  </svg>
+                </div>
+
+                {/* PASO 5: ALMACÉN VENEZUELA */}
+                <InteractiveNode 
+                  title="ALMACÉN VENEZUELA"
+                  imageSrc={images.almacenVenezuela}
+                  fallbackImage={images.warehouseDefault}
+                  onClickNode={() => handleOpenDetail({
+                    title: "ALMACÉN VENEZUELA",
+                    subtitle: "Bodega Principal de Distribución",
+                    isTracking: false,
+                    imageSrc: images.almacenVenezuela,
+                    actionIkomSoft: "Al descargar la mercancía, el equipo de Venezuela cambia el estatus a nivel de WMS pistoleando cada paquete individual. Esto rompe la consolidación de la Guía Master y actualiza el Tracking de los clientes a 'Disponible en Almacén' de forma masiva.",
+                    actionReal: "El contenedor o pallet es abierto de forma segura en nuestro almacén central de Venezuela. Se realiza el conteo, auditoría física de daños, y se colocan los paquetes en las estanterías de destino final, listos para entrega inmediata o entrega a repartidor nacional."
+                  })}
+                />
+
+                <FlowArrow />
+
+                {/* PASO 6: EN CAMINO CON ZOOM */}
+                <InteractiveNode 
+                  title="EN CAMINO CON ZOOM"
+                  imageSrc={images.caminoZoom}
+                  fallbackImage={images.warehouseDefault}
+                  onClickNode={() => handleOpenDetail({
+                    title: "EN CAMINO CON ZOOM",
+                    subtitle: "Envío Nacional de Última Milla",
+                    isTracking: false,
+                    imageSrc: images.caminoZoom,
+                    actionIkomSoft: "Estatus de Almacén asignado de forma manual en el sistema al procesar el despacho por lote de las guías correspondientes. IkomSoft asocia el número de guía externa que nos provee Zoom para control administrativo interno.",
+                    actionReal: "Los paquetes dirigidos a ciudades y regiones del interior de Venezuela son entregados físicamente a los camiones y mensajeros de Zoom, quienes se encargarán del reparto nacional."
+                  })}
+                />
+
+                <FlowArrow />
+
+                {/* PASO 7: ENTREGADO */}
+                <InteractiveNode 
+                  title="ENTREGADO"
+                  imageSrc={images.entregado}
+                  fallbackImage={images.warehouseDefault}
+                  onClickNode={() => handleOpenDetail({
+                    title: "ENTREGADO (FIN DE CICLO)",
+                    subtitle: "Entrega Confirmada al Destinatario",
+                    isTracking: true,
+                    imageSrc: images.entregado,
+                    actionIkomSoft: "Una vez que Zoom o nuestra entrega directa nos reporta la firma de recibido, la oficina de administración ingresa al panel de guías de IkomSoft, selecciona los bultos entregados y los marca con el Estatus de Almacén 'ENTREGADO'. Como este estado tiene marcada la regla '¿Es una entrega?: SÍ', el software liquida y descuenta automáticamente estos bultos del inventario físico activo del sistema.",
+                    actionReal: "El cliente final recibe con alegría el paquete en su domicilio o sucursal correspondiente y firma la guía de despacho de Zoom. Se da por concluida la logística física y se archiva el expediente del despacho."
+                  })}
+                />
+
+              </div>
+            )}
+
+            {/* --- PANTALLA 2: PANTALLA DE DETALLE EXCLUSIVA --- */}
+            {currentScreen === 'detail' && activeInfo && (
+              <div className="animate-zoom-in bg-slate-950 border-3 border-black rounded-3xl overflow-hidden shadow-[0_0_25px_rgba(255,255,255,0.95)] flex flex-col min-h-[500px]">
+                
+                {/* Cabezal */}
+                <div className="p-6 bg-slate-900 border-b-3 border-black text-left">
+                  <span className={`inline-block text-[10px] font-black px-2.5 py-1 rounded-md mb-2 tracking-wider ${
+                    activeInfo.isTracking 
+                      ? 'bg-sky-500/25 text-sky-400 border border-sky-500/40' 
+                      : 'bg-amber-500/25 text-amber-400 border border-amber-500/40'
+                  }`}>
+                    {activeInfo.isTracking ? 'MÓDULO: TRACKING (OFICINA)' : 'MÓDULO: ESTATUS DE PAQUETE (ALMACÉN)'}
+                  </span>
+                  <h2 className="text-2xl font-black text-white leading-tight uppercase tracking-tight drop-shadow-md">
+                    {activeInfo.title}
+                  </h2>
+                  <p className="text-slate-400 text-xs italic font-semibold mt-1">{activeInfo.subtitle}</p>
+                </div>
+
+                {/* Imagen del paso limpia y en alta definición horizontal */}
+                <div className="bg-black p-4 flex items-center justify-center border-b-3 border-black min-h-[250px] max-h-[400px]">
+                  <SafeImage 
+                    src={activeInfo.imageSrc} 
+                    fallback={images.warehouseDefault} 
+                    alt={activeInfo.title} 
+                    className="max-w-full max-h-[350px] object-contain rounded-2xl shadow-lg border border-slate-800"
+                  />
+                </div>
+
+                {/* Explicación Operativa */}
+                <div className="p-6 bg-slate-900/90 text-left space-y-6 flex-grow">
+                  
+                  {/* IkomSoft */}
+                  <div className="bg-slate-950/75 p-4 rounded-2xl border border-slate-800 backdrop-blur-sm shadow-inner">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+                      <p className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Gestión en el Sistema IkomSoft</p>
+                    </div>
+                    <p className="text-xs md:text-sm text-slate-100 leading-relaxed font-semibold">
+                      {activeInfo.actionIkomSoft}
+                    </p>
+                  </div>
+
+                  {/* Realidad Física */}
+                  <div className="bg-slate-950/75 p-4 rounded-2xl border border-slate-800 backdrop-blur-sm shadow-inner">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+                      <p className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Situación Real de los Paquetes</p>
+                    </div>
+                    <p className="text-xs md:text-sm text-slate-200 leading-relaxed font-semibold">{activeInfo.actionReal}</p>
+                  </div>
+
+                </div>
+
+                {/* Botón de Retorno de Flujo */}
+                <div className="p-6 bg-slate-950 border-t-3 border-black">
+                  <button 
+                    onClick={handleCloseDetail}
+                    className="w-full py-4 bg-red-600 hover:bg-red-700 active:scale-95 text-white font-black rounded-2xl border-2 border-black uppercase text-xs tracking-wider shadow-[0_4px_12px_rgba(239,68,68,0.4)] transition-all duration-150"
+                  >
+                    Volver al Flujo
+                  </button>
+                </div>
+
+              </div>
+            )}
+
+            {/* PIE DE PÁGINA */}
+            <footer className="mt-12 pt-6 border-t border-black/10 text-center flex flex-col items-center justify-center">
+              <p className="text-[11px] md:text-xs text-slate-900 font-extrabold max-w-xl leading-relaxed">
+                Diagrama del proceso logístico implementado en IkomSoft para YUM EXPRESS por Fernando Victorino.
+              </p>
+            </footer>
+
+          </div>
+        </div>
+      );
+    };
+
+    // Montar la aplicación React
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
